@@ -16,6 +16,7 @@ require_once("config/conexion.php"); //funcion que conecta a la base de datos
 $active_proyecto = "active";
 $active_dropdown = "active";
 $title = "Gestion de Inventario - Proyectos";
+$isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] == 'admin') ? true : false; //valida si es admin
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +35,13 @@ $title = "Gestion de Inventario - Proyectos";
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<div class="btn-group pull-right">
-					<button type='button' class="btn btn-primary" data-toggle="modal" data-target="#nuevoProyecto"><span class="glyphicon glyphicon-plus"></span> Alta Proyecto</button>
+					<?php
+						if ($isAdmin) { 
+					?>
+						<button type='button' class="btn btn-primary" data-toggle="modal" data-target="#nuevoProyecto"><span class="glyphicon glyphicon-plus"></span> Alta Proyecto</button>
+					<?php 
+						}
+					?>
 				</div>
 				<h4><i class='glyphicon glyphicon-search'></i> Proyectos</h4>
 			</div>

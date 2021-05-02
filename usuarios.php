@@ -16,6 +16,7 @@ require_once("config/conexion.php"); //funcion que conecta a la base de datos
 $active_dropdown = "active";
 $active_usuarios = "active";
 $title = "Gestion de Equipos - Usuarios";
+$isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] == 'admin') ? true : false; //valida si es admin
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +33,13 @@ $title = "Gestion de Equipos - Usuarios";
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<div class="btn-group pull-right">
-					<button type='button' class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span> Alta Usuario</button>
+					<?php
+						if ($isAdmin) { 
+					?>
+						<button type='button' class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span> Alta Usuario</button>
+					<?php 
+						}
+					?>
 				</div>
 				<h4><i class='glyphicon glyphicon-search'></i> Usuarios</h4>
 			</div>

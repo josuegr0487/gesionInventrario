@@ -32,6 +32,7 @@ if (isset($_GET['id'])) {
 }
 
 if ($action == 'ajax') {
+	$isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] == 'admin') ? true : false; //valida si es admin
 	$q = mysqli_real_escape_string($con, (strip_tags($_REQUEST['q'], ENT_QUOTES)));
 	$aColumns = array('codigo_producto', 'descripcion_producto'); //Columnas de busqueda
 	$sTable = "productos";
@@ -89,10 +90,17 @@ if ($action == 'ajax') {
 						<td><?php echo $stock; ?></td>
 						<td><?php echo $abreviacion; ?></td>
 
-						<td class='text-right'>
+						<td class='text-right'><span>
 							<a href="#" class='btn btn-default' title='Consultar producto' data-row='<?php echo $row_data; ?>' data-toggle="modal" data-target="#myModal1"><i class="glyphicon glyphicon-search"></i></a>
+							<?php
+								if ($isAdmin) { 
+							?>
 							<a href="#" class='btn btn-default' title='Editar producto' data-row='<?php echo $row_data; ?>' data-toggle="modal" data-target="#myModal2"><i class="glyphicon glyphicon-edit"></i></a>
-							<a href="#" class='btn btn-default' title='Baja de Producto' data-row='<?php echo $row_data; ?>' data-toggle="modal" data-target="#myModal3"><i class="glyphicon glyphicon-trash"></i> </a></span></td>
+							<a href="#" class='btn btn-default' title='Baja de Producto' data-row='<?php echo $row_data; ?>' data-toggle="modal" data-target="#myModal3"><i class="glyphicon glyphicon-trash"></i> </a>
+							<?php 
+								}
+							?>
+						</span></td>
 						</td>
 
 					</tr>

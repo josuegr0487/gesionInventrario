@@ -40,6 +40,7 @@ if (isset($_GET['id'])) {
 	}
 }
 if ($action == 'ajax') {
+	$isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] == 'admin') ? true : false; //valida si es admin
 	$q = mysqli_real_escape_string($con, (strip_tags($_REQUEST['q'], ENT_QUOTES)));
 	$aColumns = array('firstname', 'lastname'); //Columnas de busqueda
 	$sTable = "usuarios";
@@ -77,8 +78,13 @@ if ($action == 'ajax') {
 					<th>Usuario</th>
 					<th>Email</th>
 					<th>Fecha de Alta</th>
+					<?php
+						if ($isAdmin) { 
+					?>
 					<th><span class="pull-right">Acciones</span></th>
-
+					<?php 
+						}
+					?>
 				</tr>
 				<?php
 				while ($row = mysqli_fetch_array($query)) {  //carga filas
@@ -101,12 +107,18 @@ if ($action == 'ajax') {
 						<td><?php echo $user_name; ?></td>
 						<td><?php echo $user_email; ?></td>
 						<td><?php echo $date_added; ?></td>
-
+						<?php
+							if ($isAdmin) { 
+						?>
 						<td><span class="pull-right">
-								<a href="#" class='btn btn-default' title='Editar usuario' onclick="obtener_datos('<?php echo $user_id; ?>');" data-toggle="modal" data-target="#myModal2"><i class="glyphicon glyphicon-edit"></i></a>
-								<a href="#" class='btn btn-default' title='Cambiar contraseña' onclick="get_user_id('<?php echo $user_id; ?>');" data-toggle="modal" data-target="#myModal3"><i class="glyphicon glyphicon-cog"></i></a>
-								<a href="#" class='btn btn-default' title='Borrar usuario' onclick="eliminar('<? echo $user_id; ?>')"><i class="glyphicon glyphicon-trash"></i> </a></span></td>
-
+							
+							<a href="#" class='btn btn-default' title='Editar usuario' onclick="obtener_datos('<?php echo $user_id; ?>');" data-toggle="modal" data-target="#myModal2"><i class="glyphicon glyphicon-edit"></i></a>
+							<a href="#" class='btn btn-default' title='Cambiar contraseña' onclick="get_user_id('<?php echo $user_id; ?>');" data-toggle="modal" data-target="#myModal3"><i class="glyphicon glyphicon-cog"></i></a>
+							<a href="#" class='btn btn-default' title='Borrar usuario' onclick="eliminar('<? echo $user_id; ?>')"><i class="glyphicon glyphicon-trash"></i> </a>
+						</span></td>
+						<?php 
+							}
+						?>
 					</tr>
 				<?php
 				}

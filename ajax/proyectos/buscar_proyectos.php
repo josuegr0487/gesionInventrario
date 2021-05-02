@@ -43,6 +43,7 @@ if (isset($_GET['id'])) {
 
 
 if ($action == 'ajax') {
+	$isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] == 'admin') ? true : false; //valida si es admin
 	$q = mysqli_real_escape_string($con, (strip_tags($_REQUEST['q'], ENT_QUOTES)));
 	$aColumns = array('nombre_proyecto'); //Columnas de busqueda
 	$sTable = "proyectos";
@@ -78,8 +79,13 @@ if ($action == 'ajax') {
 				<tr class="info">
 					<th>Nombre</th>
 					<th>Fecha de Alta</th>
-					<th class='text-right'>Acciones</th>
-
+					<?php
+						if ($isAdmin) { 
+					?>
+						<th class='text-right'>Acciones</th>
+					<?php 
+						}
+					?>
 				</tr>
 				<?php
 				while ($row = mysqli_fetch_array($query)) { //carga filas
@@ -92,12 +98,16 @@ if ($action == 'ajax') {
 
 						<td><?php echo $nombre_proyecto; ?></td>
 						<td><?php echo $date_added; ?></td>
-
-						<td class='text-right'>
-							<a href="#" class='btn btn-default' title='Editar proyecto' data-nombre='<?php echo $nombre_proyecto; ?>' data-id='<?php echo $id_proyecto; ?>' data-toggle="modal" data-target="#myModal2"><i class="glyphicon glyphicon-edit"></i></a>
-							<a href="#" class='btn btn-default' title='Borrar proyecto' onclick="eliminar('<?php echo $id_proyecto; ?>')"><i class="glyphicon glyphicon-trash"></i> </a>
-						</td>
-
+						<?php
+							if ($isAdmin) { 
+						?>
+							<td class='text-right'>
+								<a href="#" class='btn btn-default' title='Editar proyecto' data-nombre='<?php echo $nombre_proyecto; ?>' data-id='<?php echo $id_proyecto; ?>' data-toggle="modal" data-target="#myModal2"><i class="glyphicon glyphicon-edit"></i></a>
+								<a href="#" class='btn btn-default' title='Borrar proyecto' onclick="eliminar('<?php echo $id_proyecto; ?>')"><i class="glyphicon glyphicon-trash"></i> </a>
+							</td>
+						<?php 
+							}
+						?>
 					</tr>
 				<?php
 				}

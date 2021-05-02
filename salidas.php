@@ -15,6 +15,7 @@ require_once("config/conexion.php"); //funcion que conecta a la base de datos
 
 $active_salidas = "active";
 $title = "Gestion de Inventario - Salidas";
+$isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] == 'admin') ? true : false; //valida si es admin
 ?>
 
 <!DOCTYPE html>
@@ -57,12 +58,18 @@ $title = "Gestion de Inventario - Salidas";
 						<div class='col-md-4'>
 							<input type="text" class="form-control" id="q" placeholder="Código del producto">
 						</div>
-
-						<div class="col-md-2">
-							<button type="button" class="btn btn-default" id="escanear">
-								<span class="glyphicon glyphicon-barcode"></span> Escanear
-							</button>
-						</div>
+						
+						<?php
+							if ($isAdmin) { 
+						?>
+							<div class="col-md-2">
+								<button type="button" class="btn btn-default" id="escanear">
+									<span class="glyphicon glyphicon-barcode"></span> Escanear
+								</button>
+							</div>
+						<?php 
+							}
+						?>
 
 						<div class='col-md-12 text-center'>
 							<span id="loader"></span>

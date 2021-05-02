@@ -16,6 +16,7 @@ require_once("config/conexion.php"); //funcion que conecta a la base de datos
 $active_medida = "active";
 $active_dropdown = "active";
 $title = "Gestion de Inventario - Unidad de Medidas";
+$isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] == 'admin') ? true : false; //valida si es admin
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +35,13 @@ $title = "Gestion de Inventario - Unidad de Medidas";
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<div class="btn-group pull-right">
-					<button type='button' class="btn btn-primary" data-toggle="modal" data-target="#nuevaUnidad"><span class="glyphicon glyphicon-plus"></span> Alta Unidad de Medida</button>
+					<?php
+						if ($isAdmin) { 
+					?>
+						<button type='button' class="btn btn-primary" data-toggle="modal" data-target="#nuevaUnidad"><span class="glyphicon glyphicon-plus"></span> Alta Unidad de Medida</button>
+					<?php 
+						}
+					?>
 				</div>
 				<h4><i class='glyphicon glyphicon-search'></i> Unidad de Medidas</h4>
 			</div>

@@ -43,6 +43,7 @@ if (isset($_GET['id'])) {
 
 
 if ($action == 'ajax') {
+	$isAdmin = (isset($_SESSION['user_name']) && $_SESSION['user_name'] == 'admin') ? true : false; //valida si es admin
 	$q = mysqli_real_escape_string($con, (strip_tags($_REQUEST['q'], ENT_QUOTES)));
 	$aColumns = array('nombre_unidad'); //Columnas de busqueda
 	$sTable = "unidad_medida";
@@ -79,8 +80,13 @@ if ($action == 'ajax') {
 					<th>Nombre</th>
 					<th>Abreviatura</th>
 					<th>Fecha de Alta</th>
-					<th class='text-right'>Acciones</th>
-
+					<?php
+						if ($isAdmin) { 
+					?>
+						<th class='text-right'>Acciones</th>
+					<?php 
+						}
+					?>
 				</tr>
 				<?php
 				while ($row = mysqli_fetch_array($query)) { //carga filas
@@ -95,12 +101,16 @@ if ($action == 'ajax') {
 						<td><?php echo $nombre_unidad; ?></td>
 						<td><?php echo $abreviatura; ?></td>
 						<td><?php echo $date_added; ?></td>
-
-						<td class='text-right'>
-							<a href="#" class='btn btn-default' title='Editar unidad de medida' data-nombre='<?php echo $nombre_unidad; ?>' data-abreviatura='<?php echo $abreviatura; ?>' data-id='<?php echo $id_unidad; ?>' data-toggle="modal" data-target="#myModal2"><i class="glyphicon glyphicon-edit"></i></a>
-							<a href="#" class='btn btn-default' title='Borrar unidad de medida' onclick="eliminar('<?php echo $id_unidad; ?>')"><i class="glyphicon glyphicon-trash"></i> </a>
-						</td>
-
+						<?php
+							if ($isAdmin) { 
+						?>
+							<td class='text-right'>
+								<a href="#" class='btn btn-default' title='Editar unidad de medida' data-nombre='<?php echo $nombre_unidad; ?>' data-abreviatura='<?php echo $abreviatura; ?>' data-id='<?php echo $id_unidad; ?>' data-toggle="modal" data-target="#myModal2"><i class="glyphicon glyphicon-edit"></i></a>
+								<a href="#" class='btn btn-default' title='Borrar unidad de medida' onclick="eliminar('<?php echo $id_unidad; ?>')"><i class="glyphicon glyphicon-trash"></i> </a>
+							</td>
+						<?php 
+							}
+						?>
 					</tr>
 				<?php
 				}
